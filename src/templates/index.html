@@ -1,0 +1,19 @@
+{% extends "estadia_layout.html" %}
+
+
+{% block content %}
+
+<h1>Estadia Garage</h1>
+<button  type="button" class="btn btn-primary"  hx-get='{{ url_for('auto_bp.nueva_Estadia_form') }}' hx-target="#modal">Administrar</button>
+
+
+<div id="modal"></div>
+
+<div id="estadia-lista">
+    {% for auto in autos %}
+        {% include "auto_item.html" %}
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,4 @@
+flask
+flask_migrate
+SQLAlchemy
+pydantic

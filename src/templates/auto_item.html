@@ -1,0 +1,46 @@
+<div id="auto-{{ auto.id }}" class="card my-2" style="display: flex;align-items: center;">
+    <div class="card-body" style="align-items: center;">
+        <h5 class="card-title">Modelo: {{ auto.modelo }}</h5>
+        <p class="card-text">Patente: {{ auto.patente }}</p>
+        <p class="card-text">{{ wikidata }}</p>
+        
+        <img src="{{ auto.image_url }}" alt="Auto Image" height="200dvh">
+        <div style="margin-top: 1%; display:block; align-items: center;">
+            <button class="btn btn-warning" hx-get="{{ url_for('auto_bp.edit_estadia', auto_id=auto.id) }}" hx-target="#modal">Editar Estadia</button>
+            <button class="btn btn-danger" hx-delete="{{ url_for('auto_bp.eliminar_estadia', auto_id=auto.id) }}" hx-target="#modal">Eliminar Estadia</button>
+            <p id="countdown-timer" class="card-text">Tiempo restante: Cargando...{{}}</p> <!-- Valor inicial -->
+
+            <script>
+                // Asegúrate de que el DOM esté completamente cargado antes de ejecutar el script
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Obtener el valor de 'tiempo' en segundos desde Flask
+                    let timeLeft = parseInt('{{ tiempo }}', 10);
+                    
+                    // Llamar a la función para iniciar el temporizador
+                    startCountdown(timeLeft);
+                });
+
+                // Función que maneja la cuenta atrás
+                function startCountdown(timeLeft) {
+                    const countdownElement = document.getElementById("countdown-timer");  // Accedemos al elemento del temporizador
+
+                    const interval = setInterval(() => {
+                        let hours = Math.floor(timeLeft / 3600);
+                        let minutes = Math.floor((timeLeft % 3600) / 60);
+                        let seconds = timeLeft % 60;
+
+                        countdownElement.innerHTML = `Tiempo restante: ${hours}h ${minutes}m ${seconds}s`;  // Actualizamos el contenido
+
+                        timeLeft--;
+
+                        // Si el tiempo se acaba, detenemos el temporizador
+                        if (timeLeft < 0) {
+                            clearInterval(interval);
+                            countdownElement.innerHTML = "Tiempo terminado";
+                        }
+                    }, 1000);  // Actualiza cada segundo
+                }
+            </script>
+        </div>
+    </div>
+</div>
